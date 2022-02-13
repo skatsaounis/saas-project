@@ -1,0 +1,10 @@
+secretGenerator:
+- name: mysql-pass
+  literals:
+  - password=password123
+- name: mongo-pass
+  literals:
+    - password=123abc
+resources:
+  - mysql.yaml
+  - wordpress.yaml

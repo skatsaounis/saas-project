@@ -1,0 +1,23 @@
+{
+  "status": 200,
+  "message": "success",
+  "data": {
+    "data": [
+      {
+        "id": "6207ecd6c67dae3cba310974",
+        "question": "Can you hear me?",
+        "answer": "Of course!"
+      },
+      {
+        "id": "6207ecd6c67dae3cba310974",
+        "question": "Can you hear me?",
+        "answer": "Of course!"
+      },
+      {
+        "id": "6207ecd6c67dae3cba310974",
+        "question": "Can you hear me?",
+        "answer": "Of course!"
+      }
+    ]
+  }
+}
