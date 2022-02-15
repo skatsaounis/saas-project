@@ -1,5 +1,7 @@
 # SaaS Project
 
+![Architecture](docs/img/architecture.png)
+
 ## Install microk8s
 
 Follow getting started [guide](https://microk8s.io/docs/getting-started)

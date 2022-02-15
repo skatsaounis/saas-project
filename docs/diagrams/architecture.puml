@@ -1,0 +1,74 @@
+@startuml architecture
+
+header Ask Me Anything Architecture
+scale max 1024 width
+
+skinparam nodesep 10
+skinparam ranksep 10
+
+' Kubernetes
+!define KubernetesPuml https://raw.githubusercontent.com/dcasati/kubernetes-PlantUML/master/dist
+
+!includeurl KubernetesPuml/kubernetes_Common.puml
+!includeurl KubernetesPuml/kubernetes_Context.puml
+!includeurl KubernetesPuml/kubernetes_Simplified.puml
+
+!includeurl KubernetesPuml/OSS/KubernetesSvc.puml
+!includeurl KubernetesPuml/OSS/KubernetesPod.puml
+!includeurl KubernetesPuml/OSS/KubernetesDs.puml
+!includeurl KubernetesPuml/OSS/KubernetesDeploy.puml
+!includeurl KubernetesPuml/OSS/KubernetesIng.puml
+!includeurl KubernetesPuml/OSS/KubernetesRs.puml
+
+actor "User" as userAlias
+left to right direction
+
+' Kubernetes Components
+Cluster_Boundary(cluster, "Kubernetes") {
+    Namespace_Boundary(ns, "Ask Me Anything") {
+        KubernetesSvc(webuisvc, "webui-service", "")
+        KubernetesSvc(restapisvc, "restapi-service", "")
+        KubernetesPod(webuipod, "webui", "")
+        KubernetesPod(restapipod, "restapi", "")
+        KubernetesDeploy(webuideploy, "webui-deployment", "")
+        KubernetesDeploy(restapideploy, "restapi-deployment", "")
+        KubernetesRs(webuird, "webui-rs", "")
+        KubernetesRs(restapird, "restapi-rs", "")
+    }
+    Namespace_Boundary(dbns, "MongoDB") {
+        KubernetesSvc(mongosvc, "mongo", "")
+        KubernetesPod(mongo0, "mongo-0", "")
+        KubernetesPod(mongo1, "mongo-1", "")
+        KubernetesPod(mongo2, "mongo-2", "")
+        KubernetesDs(mongods, "mongo-ds", "")
+    }
+    KubernetesIng(webuiing, "localhost", "")
+    KubernetesIng(restapiing, "localhost", "")
+}
+
+' User relations
+Rel_U(userAlias, webuiing, "get HTTP/1.1 index.html")
+Rel_U(userAlias, restapiing, "get HTTP/1.1 questions")
+
+' Ask Me Anything relations
+Rel(restapipod, restapisvc, " ")
+Rel(webuipod, webuisvc, " ")
+Rel(webuideploy, webuird, " ")
+Rel(restapideploy, restapird, " ")
+Rel(webuird, webuipod, " ")
+Rel(restapird, restapipod, " ")
+Rel(webuisvc, webuiing, "localhost:30300")
+Rel(restapisvc, restapiing, "localhost:30301")
+
+' Storage relation
+Rel(restapipod, mongosvc, " ")
+
+' Mongo relations
+Rel(mongods, mongo0, " ")
+Rel(mongods, mongo1, " ")
+Rel(mongods, mongo2, " ")
+Rel(mongo0, mongosvc, " ")
+Rel(mongo1, mongosvc, " ")
+Rel(mongo2, mongosvc, " ")
+
+@enduml
